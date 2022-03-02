@@ -16,7 +16,7 @@ class HelpCommand extends Command {
   }
 
   processHelpCommand(object, message) {
-    const commandList = ["ping"];
+    const commandList = ["ping", "info"];
     const embed = new object.MessageEmbed()
       .setColor(object.mainColor)
       .setTitle("List of commands")
