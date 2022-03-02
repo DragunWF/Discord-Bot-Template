@@ -10,5 +10,11 @@
     "hasArgs": false,
     "execution": null,
     "object": null
+  },
+  {
+    "alias": ["info", "information"],
+    "hasArgs": false,
+    "execution": null,
+    "object": null
   }
 ]
