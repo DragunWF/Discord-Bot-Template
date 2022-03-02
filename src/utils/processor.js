@@ -2,14 +2,17 @@ import fs from "fs";
 
 import PingCommand from "../commands/ping.js";
 import HelpCommand from "../commands/help.js";
+import InfoCommand from "../commands/info.js";
 
 const ping = new PingCommand();
 const help = new HelpCommand();
+const info = new InfoCommand();
 
 const commands = JSON.parse(fs.readFileSync("./data/commands.json"));
 const executions = [
-  [ping.processCommand, ping],
-  [help.processCommand, help],
+  [ping.getBotLatency, ping],
+  [help.processHelpCommand, help],
+  [info.getBotInformation, info],
 ];
 
 class CommandProcessor {
