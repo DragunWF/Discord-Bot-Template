@@ -5,7 +5,7 @@ import CommandProcessor from "./utils/processor.js";
 import keepServerRunning from "./utils/server.js";
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-const prefix = "!"; // Feel free to change prefix here
+const prefix = "!"; // Can be changed
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -27,13 +27,21 @@ client.on("messageCreate", (message) => {
 });
 
 client.on("messageDelete", (message) => {
-  if (message.author.bot) return;
-  // Add code here
+  try {
+    if (message.author.bot) return;
+    // Add code here
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 client.on("messageUpdate", (oldMessage, newMessage) => {
-  if (oldMessage.author.bot) return;
-  // Add code here
+  try {
+    if (oldMessage.author.bot) return;
+    // Add code here
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 keepServerRunning();
