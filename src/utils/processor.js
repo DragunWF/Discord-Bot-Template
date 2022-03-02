@@ -13,9 +13,9 @@ const executions = [
 ];
 
 class CommandProcessor {
-  static configureSniper(message, type) {
-    if (type === "deletedMessage") sniper.storeDeletedMessage(message);
-    else sniper.storeOriginalMessage(message);
+  static onReady(prefix) {
+    ping.prefix = prefix;
+    this.mapCommandExecutions();
   }
 
   static mapCommandExecutions() {
@@ -34,11 +34,9 @@ class CommandProcessor {
     const parameters = [];
     for (let cmd of commands) {
       if (cmd.alias.includes(commandName.toLowerCase())) {
-        const special = this.checkSpecialCommand(commandName);
         parameters.push(cmd.object);
         parameters.push(command);
         if (cmd.hasArgs) parameters.push(args);
-        if (special) parameters.push(special);
         cmd.execution(...parameters);
       }
     }
