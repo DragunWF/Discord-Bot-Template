@@ -20,6 +20,7 @@ client.on("messageCreate", (message) => {
     if (message.author.bot) return;
     if (message.content.startsWith(prefix))
       CommandProcessor.processCommand(message, prefix);
+    // Add more code here
   } catch (error) {
     message.channel.send("**An unknown error has occured**");
     console.log(error);
