@@ -5,15 +5,14 @@ import CommandProcessor from "./utils/processor.js";
 import keepServerRunning from "./utils/server.js";
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-const prefix = "!";
+const prefix = "!"; // Feel free to change prefix here
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  client.user.setActivity("The Galaxy [$help]", {
+  client.user.setActivity("The Universe [!help]", {
     type: "WATCHING",
-    url: "https://dragonwf.netlify.app/",
   });
-  CommandProcessor.mapCommandExecutions();
+  CommandProcessor.onReady(prefix);
 });
 
 client.on("messageCreate", (message) => {
