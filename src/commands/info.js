@@ -15,9 +15,7 @@ class InfoCommand extends Command {
       .setAuthor({
         // Feel free to change for people who are planning to use this template
         name: "DragonWF#9321",
-        iconURL:
-          "https://cdn.discordapp.com/avatars/408972598798450688/617053b744713e4a211c1e119ec46ab4.webp",
-        url: "https://dragonwf.netlify.app/",
+        iconURL: "https://cdn.discordapp.com/avatars/408972598798450688/617053b744713e4a211c1e119ec46ab4.webp",
       })
       .setTitle("Bot Information")
       .setDescription(description)
