@@ -8,11 +8,12 @@ const ping = new PingCommand();
 const help = new HelpCommand();
 const info = new InfoCommand();
 
+// The purpose of command executions is to map command objects with a function to call
 const commands = JSON.parse(fs.readFileSync("./data/commands.json"));
-const executions = [
-  [ping.getBotLatency, ping],
-  [help.processHelpCommand, help],
-  [info.getBotInformation, info],
+const commandExecutions = [
+  { name: "ping", call: ping.getBotLatency, object: ping },
+  { name: "help", call: help.processHelpCommand, object: help },
+  { name: "info", call: info.getBotInformation, object: info },
 ];
 
 class CommandProcessor {
@@ -22,9 +23,12 @@ class CommandProcessor {
   }
 
   static mapCommandExecutions() {
+    commands.sort((a, b) => a.name.localeCompare(b.name));
+    commandExecutions.sort((a, b) => a.name.localeCompare(b.name));
+
     for (let i = 0; i < commands.length; i++) {
-      commands[i].execution = executions[i][0];
-      commands[i].object = executions[i][1];
+      commands[i].execution = commandExecutions[i].call;
+      commands[i].object = commandExecutions[i].object;
     }
   }
 
