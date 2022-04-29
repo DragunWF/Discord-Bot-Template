@@ -1,18 +1,19 @@
 import "dotenv/config";
+import fs from "fs";
 import Discord from "discord.js";
 
 import CommandProcessor from "./utils/processor.js";
 import keepServerRunning from "./utils/server.js";
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-const prefix = "!"; // Can be changed
+const settings = JSON.parse(fs.readFileSync("./config/bot.json"));
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  client.user.setActivity("The Universe [!help]", {
-    type: "WATCHING",
+  client.user.setActivity(settings.activity.text, {
+    type: settings.activity.type.toUpperCase(),
   });
-  CommandProcessor.onReady(prefix);
+  CommandProcessor.onReady();
 });
 
 client.on("messageCreate", (message) => {
