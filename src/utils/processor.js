@@ -4,49 +4,56 @@ import PingCommand from "../commands/ping.js";
 import HelpCommand from "../commands/help.js";
 import InfoCommand from "../commands/info.js";
 
-const ping = new PingCommand();
-const help = new HelpCommand();
-const info = new InfoCommand();
-
-// The purpose of command executions is to map command objects with a function to call
-const commands = JSON.parse(fs.readFileSync("./data/commands.json"));
-const commandExecutions = [
-  { name: "ping", call: ping.getBotLatency, object: ping },
-  { name: "help", call: help.processHelpCommand, object: help },
-  { name: "info", call: info.getBotInformation, object: info },
-];
-
 class CommandProcessor {
-  static onReady(prefix) {
-    ping.prefix = prefix;
-    this.mapCommandExecutions();
+  static #commands = JSON.parse(fs.readFileSync("./config/commands.json"));
+  static #commandExecutions = [
+    { name: "ping", object: new PingCommand() },
+    { name: "help", object: new HelpCommand() },
+    { name: "info", object: new InfoCommand() },
+  ];
+  static #settings = JSON.parse(fs.readFileSync("./config/bot.json"))[0];
+
+  static onReady() {
+    let helpCommandIndex;
+    for (let i = 0; i < this.#commandExecutions.length; i++)
+      if (command.name === "help") helpCommandIndex = i;
+
+    this.#commandExecutions[helpCommandIndex].object.fillCommandList(
+      this.#commands
+    );
+    this.#mapCommandExecutions();
   }
 
-  static mapCommandExecutions() {
-    commands.sort((a, b) => a.name.localeCompare(b.name));
-    commandExecutions.sort((a, b) => a.name.localeCompare(b.name));
-
-    for (let i = 0; i < commands.length; i++) {
-      commands[i].execution = commandExecutions[i].call;
-      commands[i].object = commandExecutions[i].object;
-    }
-  }
-
-  static processCommand(command, prefix) {
+  static processCommand(command, client) {
     const [commandName, ...args] = command.content
       .trim()
-      .substring(prefix.length)
+      .substring(this.#settings.prefix.length)
       .split(/\s+/);
 
     const parameters = [];
-    for (let cmd of commands) {
+    for (let cmd of this.#commands) {
       if (cmd.alias.includes(commandName.toLowerCase())) {
-        parameters.push(cmd.object);
         parameters.push(command);
-        if (cmd.hasArgs) parameters.push(args);
-        cmd.execution(...parameters);
+        if (cmd.hasClientObject) parameters.push(client);
+        if (cmd.hasArgs) {
+          if (!args.length) {
+            command.channel.send("You forgot to add an argument!");
+            break;
+          }
+          parameters.push(args);
+        }
+        cmd.object.executeCommand(...parameters);
+        break;
       }
     }
+  }
+
+  static #mapCommandExecutions() {
+    this.#commands.sort((a, b) => a.name.localeCompare(b.name));
+    this.#commandExecutions.sort((a, b) => a.name.localeCompare(b.name));
+
+    for (let i = 0; i < this.#commands.length; i++)
+      this.#commands[i].object = this.#commandExecutions[i].object;
   }
 }
 
