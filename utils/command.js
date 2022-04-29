@@ -20,6 +20,8 @@ const embedMessageColors = [
 ];
 
 class Command {
+  #mainColor;
+
   constructor() {
     this.MessageEmbed = MessageEmbed;
     this.#mainColor = "#9966cc";
