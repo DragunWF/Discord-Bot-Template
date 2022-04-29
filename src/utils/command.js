@@ -18,16 +18,22 @@ const embedMessageColors = [
   "#FAC898", // Pastel Orange
   "#E39FF6", // Lavender
 ];
-const _mainColor = new WeakMap();
 
 class Command {
   constructor() {
     this.MessageEmbed = MessageEmbed;
-    _mainColor.set(this, "#9966cc");
+    this.#mainColor = "#9966cc";
+  }
+
+  executeCommand(message) {
+    // The purpose of this is for it to kind of imitate abstract methods from OOP languages
+    throw new Error(
+      "You forgot to add the implementation to your inherited command!"
+    );
   }
 
   get mainColor() {
-    return _mainColor.get(this);
+    return this.#mainColor;
   }
 
   getRandomEmbedColor() {
