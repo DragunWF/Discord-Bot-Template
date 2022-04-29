@@ -33,7 +33,15 @@ class HelpCommand extends Command {
         withArgs += `- \`${this.#prefix}${command.name} <argument>\`\n`;
       else noArgs += `- \`${this.#prefix}${command.name}\`\n`;
     }
-    return `**Regular Commands:**\n${noArgs}\n**Commands With Arguments:**\n${withArgs}`;
+    return `
+**Regular Commands:**
+${this.#validateCommandList(noArgs)}
+**Commands With Arguments:**
+${this.#validateCommandList(withArgs)}`;
+  }
+
+  #validateCommandList(list) {
+    return list ? list : `- \`None\`\n`;
   }
 }
 
