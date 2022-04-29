@@ -2,11 +2,11 @@ import "dotenv/config";
 import fs from "fs";
 import Discord from "discord.js";
 
-import CommandProcessor from "./utils/processor.js";
+import CommandProcessor from "./utils/command-processor.js";
 import keepServerRunning from "./utils/server.js";
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-const settings = JSON.parse(fs.readFileSync("./config/bot.json"));
+const settings = JSON.parse(fs.readFileSync("./config/bot.json"))[0];
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -19,8 +19,8 @@ client.on("ready", () => {
 client.on("messageCreate", (message) => {
   try {
     if (message.author.bot) return;
-    if (message.content.startsWith(prefix))
-      CommandProcessor.processCommand(message, prefix);
+    if (message.content.startsWith(settings.prefix))
+      CommandProcessor.processCommand(message, settings.prefix);
     // Add more code here
   } catch (error) {
     message.channel.send("**An unknown error has occured**");

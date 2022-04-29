@@ -16,7 +16,7 @@ class CommandProcessor {
   static onReady() {
     let helpCommandIndex;
     for (let i = 0; i < this.#commandExecutions.length; i++)
-      if (command.name === "help") helpCommandIndex = i;
+      if (this.#commandExecutions[i].name === "help") helpCommandIndex = i;
 
     this.#commandExecutions[helpCommandIndex].object.fillCommandList(
       this.#commands
