@@ -2,10 +2,10 @@
   "name": "discord-bot-template",
   "version": "1.0.0",
   "description": "My personal template used for starting the development of a discord bot",
-  "main": "src/main.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/main.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "DragunWF",
